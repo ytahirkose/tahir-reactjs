@@ -6,9 +6,11 @@ export const isHandlerEnabled = (config = {}) => (!(config.hasOwnProperty('handl
 
 export const requestHandler = (request:any) => {
   if (isHandlerEnabled(request)) {
-    request.headers = {}
-    // Modify request here
-    // store.dispatch(setLoader(true));
+    request.headers = {
+      Accept: 'application/json, text/plain, */*',
+      AccessControlAllowOrigin: '*',
+      Authorization: `Bearer ${Cookie.get('developerToken')}`
+    }
   }
   return request;
 };
@@ -16,7 +18,6 @@ export const requestHandler = (request:any) => {
 export const successHandler = (response:any) => {
   if (isHandlerEnabled(response)) {
     // Handle responses
-    // store.dispatch(setLoader(false));
   }
   return response;
 };

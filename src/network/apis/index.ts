@@ -1,13 +1,11 @@
 import axios from 'axios';
-import Cookie from "js-cookie";
-import config from '../../config';
 import {
   requestHandler,
   successHandler,
   errorHandler
 } from '../interceptors';
 
-const BASE_URL = config?.BASE_URL
+const BASE_URL = 'https://upayments-studycase-api.herokuapp.com/api'
 
 export const axiosInstance = axios.create({
   baseURL: BASE_URL,
@@ -21,3 +19,4 @@ axiosInstance.interceptors.response.use(
   (response) => successHandler(response),
   (error) => errorHandler(error)
 );
+

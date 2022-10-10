@@ -4,10 +4,8 @@ import { BeatLoader } from "react-spinners";
 
 const Loader: React.FC = () => {
   return (
-      <div className="spinnerContainer d-flex flex-column">
-          <div className="flex-grow-1 d-flex align-items-center justify-content-center">
-              <BeatLoader/>
-          </div>
+      <div className="spinnerContainer">
+          <BeatLoader/>
       </div>
   )
 }

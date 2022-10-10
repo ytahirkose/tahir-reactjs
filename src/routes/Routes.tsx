@@ -7,11 +7,12 @@ import {
 } from '../pages';
 import { Routes } from 'react-router';
 import { DefaultLayout } from '../containers';
-import config from '../config';
 import Loader from '../components/Loader/Loader';
 
+const BASE_NAME = '/';
+
 const RouteList = (
-  <Router basename={config.BASE_NAME}>
+  <Router basename={BASE_NAME}>
     <Suspense fallback={<Loader/>}>
       <Routes>
         <Route path='/' element={<DefaultLayout/>}>
