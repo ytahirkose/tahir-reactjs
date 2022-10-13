@@ -13,7 +13,7 @@ interface Values {
     description: string,
     category: string,
     avatar: string,
-    developerEmail: string
+    developerEmail: string,
 }
 
 
@@ -44,7 +44,8 @@ const slice = createSlice({
         products: <Product[]>[],
         favouriteProducts: <Product[]>[],
         productsAsCategory: <Product[]>[],
-        selectedCategory: 'All Categories'
+        selectedCategory: 'All Categories',
+        selectedProduct: <Product>{}
     },
     reducers: {
         addFavourite: (state, action: PayloadAction<Product>) => {
@@ -82,7 +83,10 @@ const slice = createSlice({
                 }
             });
             state.productsAsCategory = action.payload==''?state.products:temp;
-        }
+        },
+        setSelectedProduct: (state, action: PayloadAction<Product>) => {
+            state.selectedProduct = action.payload
+        },
     },
     extraReducers: {
 
@@ -129,5 +133,6 @@ export default slice.reducer;
 export const {
     addFavourite,
     removeFavourite,
-    setProductAsCategory
+    setProductAsCategory,
+    setSelectedProduct
 } = slice.actions;

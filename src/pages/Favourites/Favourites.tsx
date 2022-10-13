@@ -5,7 +5,6 @@ import {useAppSelector} from "../../hooks/hooks";
 
 const Favourites: React.FC = () => {
     const {favouriteProducts} = useAppSelector((state) => state.product);
-    console.log(favouriteProducts)
     return (
         <div className={'flex justify-around flex-wrap'}>
             {favouriteProducts.length==0?'There is no favourite':

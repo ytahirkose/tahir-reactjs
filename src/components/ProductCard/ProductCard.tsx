@@ -2,7 +2,8 @@ import React from 'react';
 import {Product} from "../../models/Product";
 import {IconLike} from "../../utils/Icons";
 import {useAppDispatch} from "../../hooks/hooks";
-import {addFavourite, removeFavourite, setProductAsCategory} from "../../store/product";
+import {addFavourite, removeFavourite, setProductAsCategory, setSelectedProduct} from "../../store/product";
+import {Link} from "react-router-dom";
 
 type Props = {
     product: Product;
@@ -16,7 +17,7 @@ const ProductCard: React.FC<Props> = ({product}) => {
     }
 
     return (
-        <div className="container mx-auto px-3 pb-3 m-3 bg-gray-100 w-72 flex flex-col justify-center rounded shadow">
+        <Link to='/detail' className="container mx-auto px-3 pb-3 m-3 bg-gray-100 w-72 flex flex-col justify-center rounded shadow" onClick={()=>dispatch(setSelectedProduct(product))}>
             <div
                 className="relative flex flex-col flex-wrap items-center bg-opacity-75 "
                 style={{cursor: 'auto'}}>
@@ -43,7 +44,7 @@ const ProductCard: React.FC<Props> = ({product}) => {
                     {product.inFavourite? 'Remove': 'Add'} to favourite list
                 </button>
             </div>
-        </div>
+        </Link>
     )
 }
 
