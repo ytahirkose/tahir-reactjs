@@ -8,6 +8,7 @@ import {
 import { Routes } from 'react-router';
 import { DefaultLayout } from '../containers';
 import Loader from '../components/Loader/Loader';
+import Favourites from "../pages/Favourites/Favourites";
 
 const BASE_NAME = '/';
 
@@ -19,6 +20,7 @@ const RouteList = (
           <Route path='/' element={<Home/>}/>
           <Route path='/home' element={<Home/>}/>
           <Route path='/detail' element={<Detail/>}/>
+          <Route path='/favourites' element={<Favourites/>}/>
           <Route path='*' element={<NotFound/>}/>
         </Route>
       </Routes>

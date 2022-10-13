@@ -5,5 +5,7 @@ export interface Product {
     description: string,
     avatar: string,
     developerEmail: string,
-    inFavourite: boolean
+    inFavourite: boolean,
+    __v: number,
+    _id: string
 }
