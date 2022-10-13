@@ -2,13 +2,19 @@ import React from 'react';
 import {Product} from "../../models/Product";
 import {IconLike} from "../../utils/Icons";
 import {useAppDispatch} from "../../hooks/hooks";
-import {addFavourite, removeFavourite} from "../../store/product";
+import {addFavourite, removeFavourite, setProductAsCategory} from "../../store/product";
 
 type Props = {
     product: Product;
 }
 const ProductCard: React.FC<Props> = ({product}) => {
     const dispatch = useAppDispatch()
+
+    const handleFav = () => {
+        product.inFavourite?dispatch(removeFavourite(product._id)):dispatch(addFavourite(product))
+        dispatch(setProductAsCategory(''));
+    }
+
     return (
         <div className="container mx-auto px-3 pb-3 m-3 bg-gray-100 w-72 flex flex-col justify-center rounded shadow">
             <div
@@ -32,7 +38,7 @@ const ProductCard: React.FC<Props> = ({product}) => {
                 <button
                     type="button"
                     className="inline-flex w-full justify-center rounded-md border border-transparent bg-green-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm mb-3"
-                    onClick={()=>product.inFavourite?dispatch(removeFavourite(product._id)):dispatch(addFavourite(product))}
+                    onClick={handleFav}
                 >
                     {product.inFavourite? 'Remove': 'Add'} to favourite list
                 </button>

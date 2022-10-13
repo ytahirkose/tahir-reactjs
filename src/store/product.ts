@@ -7,10 +7,30 @@ import { requestPayload } from '../utils/Constants';
 import { toast } from "react-toastify";
 import {Product} from "../models/Product";
 
+interface Values {
+    name: string,
+    price: number,
+    description: string,
+    category: string,
+    avatar: string,
+    developerEmail: string
+}
+
+
 export const getProducts = createAsyncThunk('getProducts', async (arg) => {
     try {
         // @ts-ignore
         const response = await API.getProducts({...arg, ...requestPayload});
+        return response.data;
+    } catch (err:any) {
+        return err.response.data
+    }
+});
+
+export const addProduct = createAsyncThunk('addProduct', async (arg: Values) => {
+    try {
+        // @ts-ignore
+        const response = await API.addProduct({...arg, ...requestPayload});
         return response.data;
     } catch (err:any) {
         return err.response.data
@@ -22,7 +42,9 @@ const slice = createSlice({
     initialState: {
         isProductPending: false,
         products: <Product[]>[],
-        favouriteProducts: <Product[]>[]
+        favouriteProducts: <Product[]>[],
+        productsAsCategory: <Product[]>[],
+        selectedCategory: 'All Categories'
     },
     reducers: {
         addFavourite: (state, action: PayloadAction<Product>) => {
@@ -36,7 +58,7 @@ const slice = createSlice({
             state.favouriteProducts = temp;
             window.localStorage.setItem('favouriteProducts', JSON.stringify(state.favouriteProducts));
             toast.dismiss();
-            toast.success('added')
+            toast.success('added');
         },
         removeFavourite: (state, action: PayloadAction<string>) => {
             state.products = state.products.map((product) => product._id == action.payload?{...product, inFavourite: false}:product)
@@ -50,6 +72,16 @@ const slice = createSlice({
             window.localStorage.setItem('favouriteProducts', JSON.stringify(state.favouriteProducts))
             toast.dismiss();
             toast.success('removed')
+        },
+        setProductAsCategory: (state, action: PayloadAction<string>) => {
+            action.payload == '' ? state.selectedCategory = 'All Categories' : state.selectedCategory = action.payload;
+            const temp: Product[] = [];
+            state.products.map((product:Product) => {
+                if (product.category == state.selectedCategory) {
+                    temp.push(product)
+                }
+            });
+            state.productsAsCategory = action.payload==''?state.products:temp;
         }
     },
     extraReducers: {
@@ -71,8 +103,21 @@ const slice = createSlice({
                 state.favouriteProducts.map((favouriteProduct)=>product._id == favouriteProduct._id? isFavourite = true : null)
                 return isFavourite? {...product, inFavourite: true} : product
             })
+            state.productsAsCategory = state.products;
         },
         [getProducts.rejected.toString()]: (state, {payload}) => {
+            state.isProductPending = false;
+        },
+
+        [addProduct.pending.toString()]: (state, {payload}) => {
+            state.isProductPending = true;
+        },
+        [addProduct.fulfilled.toString()]: (state, {payload}) => {
+            state.isProductPending = false;
+            toast.dismiss();
+            toast.success('completed')
+        },
+        [addProduct.rejected.toString()]: (state, {payload}) => {
             state.isProductPending = false;
         },
 
@@ -83,5 +128,6 @@ export default slice.reducer;
 
 export const {
     addFavourite,
-    removeFavourite
+    removeFavourite,
+    setProductAsCategory
 } = slice.actions;

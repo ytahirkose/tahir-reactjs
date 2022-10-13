@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react'
 import {createSession} from "../../store/auth";
 import {useAppDispatch, useAppSelector} from "../../hooks/hooks";
 import Cookie from "js-cookie";
-import {getProducts} from "../../store/product";
+import {getProducts, setProductAsCategory} from "../../store/product";
 import {getCategories} from "../../store/category";
 import {Loader} from "../../components";
 import {Category} from "../../models/Category";
@@ -15,7 +15,7 @@ import ProductAddForm from "../../components/ProductAddForm/ProductAddForm";
 const Home: React.FC = () => {
     const dispatch = useAppDispatch()
     const {token} = useAppSelector((state) => state.auth);
-    const {products, isProductPending} = useAppSelector((state) => state.product);
+    const {productsAsCategory ,selectedCategory, isProductPending} = useAppSelector((state) => state.product);
     const {categories, isCategoriesPending} = useAppSelector((state) => state.category);
     const [isProductAddFormOpen, setIsProductAddFormOpen] = useState<boolean>(false)
     // @ts-ignore
@@ -31,9 +31,6 @@ const Home: React.FC = () => {
         dispatch(getCategories());
     }, [token])
 
-    useEffect(() => {
-        console.log(products)
-    }, [products])
     if (isCategoriesPending || isProductPending) {
         return (<Loader/>)
     }
@@ -53,7 +50,7 @@ const Home: React.FC = () => {
                                 </button>
                                 <h3 className={'text-3xl'}>Categories</h3>
                                 <ul>
-                                    <li className="mt-6">
+                                    <li className="mt-6" onClick={()=>dispatch(setProductAsCategory(''))}>
                                         <span className="flex items-center text-nebula-600  hover:text-amber-700">
                                             <span className="flex w-8 h-8 mr-4 items-center justify-center fill-current">
                                                 <EyeGlassIcon />
@@ -62,7 +59,7 @@ const Home: React.FC = () => {
                                         </span>
                                     </li>
                                     {categories?.map((category:Category)=>(
-                                        <li className="mt-6" key={category.name}>
+                                        <li className="mt-6" key={category.name} onClick={()=>dispatch(setProductAsCategory(category.name))}>
                                         <span className="flex items-center text-nebula-600  hover:text-amber-700">
                                             <span className="flex w-8 h-8 mr-4 items-center justify-center fill-current">
                                                 <ListStyleIcon />
@@ -79,8 +76,9 @@ const Home: React.FC = () => {
             </div>
             <div className={'w-3/4'}>
                 <ProductAddForm isOpen={isProductAddFormOpen} setIsOpen={setIsProductAddFormOpen} />
+                <h1 className={'text-5xl mb-3'}>{selectedCategory}</h1>
                 <div className={'flex justify-around flex-wrap'}>
-                    {products?.map((product:Product, index:number)=>(
+                    {productsAsCategory?.map((product:Product, index:number)=>(
                         <ProductCard product={product} key={`${product.developerEmail}_${index}`}/>
                     ))}
                 </div>
