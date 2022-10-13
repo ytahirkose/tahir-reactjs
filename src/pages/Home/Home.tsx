@@ -18,8 +18,7 @@ const Home: React.FC = () => {
     const {productsAsCategory ,selectedCategory, isProductPending} = useAppSelector((state) => state.product);
     const {categories, isCategoriesPending} = useAppSelector((state) => state.category);
     const [isProductAddFormOpen, setIsProductAddFormOpen] = useState<boolean>(false)
-    // @ts-ignore
-    console.log(JSON.parse(localStorage.getItem('favouriteProducts')))
+
     useEffect(() => {
         if (!Cookie.get('developerToken')) {
             dispatch(createSession());
