@@ -4,7 +4,7 @@ import { ExclamationTriangleIcon } from '@heroicons/react/24/outline'
 import {useAppDispatch, useAppSelector} from "../../hooks/hooks";
 import {Category} from "../../models/Category";
 import {useFormik} from "formik";
-import {addProduct} from "../../store/product";
+import {addProduct, getProducts} from "../../store/product";
 
 interface initialValues {
     name: string,
@@ -37,6 +37,7 @@ const ProductAddForm: React.FC<Props> = ({isOpen, setIsOpen}) => {
         },
         onSubmit: values => {
             dispatch(addProduct(values));
+            dispatch(getProducts());
         },
     });
 
